@@ -16,6 +16,8 @@ import java.sql.Time;
 @Data
 public class Appointment implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -50,8 +52,8 @@ public class Appointment implements Serializable {
     private BloodBank location;
 
     @Version
-    @Column(columnDefinition = "integer DEFAULT 0", nullable = false)
     private Integer version;
+
     private String confirmationCode;
 
     public Appointment(Date appointmentDate, Time startTime, Time endTime, Customer takenBy, BloodBank location, AppointmentStatus status) {
