@@ -76,7 +76,7 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = false)
     public void Delete(Appointment entity) throws Exception {
         appointmentRepository.delete(entity);
     }
