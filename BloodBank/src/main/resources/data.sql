@@ -122,6 +122,9 @@ values(102, '2000-06-03', 'halidpasanovic1000@gmail.com', 'Saska', 0, 'Vujovic',
 insert into users
 values(103, '2000-05-05', 'nikola436346@gmail.com', 'Nikola', 1, 'Rosic', '123', 2, 'milica', 1013);
 
+INSERT INTO scheduled_order(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus, bank_email, day_of_month, hospital_email)
+	VALUES (1000, 1, 0, 0, 0, 0, 0, 0, 0, 'bloodymary@gmail.com', 1, 'zdravocorp2022@gmail.com');
+
 insert into admin
 values(101, 10);
 
