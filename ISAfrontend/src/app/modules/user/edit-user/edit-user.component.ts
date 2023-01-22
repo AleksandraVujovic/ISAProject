@@ -39,7 +39,7 @@ export class EditUserComponent implements OnInit {
   public editCustomer(){
     this.customerService.updateCustomer(this.user).subscribe( res => 
       {
-        console.log("reEEs")
+        this.toastr.success("Succsesfuly changed user")
       }, (error) => {
         console.log(error)
         this.errorMessage = error;
