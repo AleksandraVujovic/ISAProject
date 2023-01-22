@@ -3,6 +3,7 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.dto.BloodBankDTO;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.BloodBank;
+import com.example.BloodBank.model.ScheduledOrder;
 import com.example.BloodBank.service.service_interface.repository.AddressRepository;
 import com.example.BloodBank.service.service_interface.repository.BloodBankRepository;
 import com.example.BloodBank.service.service_interface.repository.BloodRepository;
@@ -10,7 +11,6 @@ import com.example.BloodBank.service.service_interface.IBloodBankService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,6 +159,53 @@ public class BloodBankService implements IBloodBankService {
         }catch(Exception e){
             throw new UnsupportedOperationException(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean checkIfBloodSupplyAvailable(String bankEmail, ScheduledOrder order) {
+        BloodBank bloodBank = bloodBankRepository.findByEmail(bankEmail).orElseThrow();
+        if(bloodBank.getBlood().getAplus() < order.getAplus())
+            return false;
+
+        if(bloodBank.getBlood().getABplus() < order.getABplus())
+            return false;
+
+        if(bloodBank.getBlood().getBplus() < order.getBplus())
+            return false;
+
+        if(bloodBank.getBlood().getOplus() < order.getOplus())
+            return false;
+
+        if(bloodBank.getBlood().getAminus() < order.getAminus())
+            return false;
+
+        if(bloodBank.getBlood().getABminus() < order.getABminus())
+            return false;
+
+        if(bloodBank.getBlood().getBminus() < order.getBminus())
+            return false;
+
+        if(bloodBank.getBlood().getOminus() < order.getOminus())
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public void reduceBloodSupply(String bankEmail, ScheduledOrder order) throws Exception {
+        if(!checkIfBloodSupplyAvailable(bankEmail, order)){
+            throw new Exception("Cant reduce blood");
+        }
+        BloodBank bloodBank = bloodBankRepository.findByEmail(bankEmail).orElseThrow();
+        bloodBank.getBlood().setAplus(bloodBank.getBlood().getAplus() - order.getAplus());
+        bloodBank.getBlood().setABplus(bloodBank.getBlood().getABplus() - order.getABplus());
+        bloodBank.getBlood().setBplus(bloodBank.getBlood().getBplus() - order.getBplus());
+        bloodBank.getBlood().setOplus(bloodBank.getBlood().getOplus() - order.getOplus());
+        bloodBank.getBlood().setAminus(bloodBank.getBlood().getAminus() - order.getAminus());
+        bloodBank.getBlood().setABminus(bloodBank.getBlood().getABminus() - order.getABminus());
+        bloodBank.getBlood().setBminus(bloodBank.getBlood().getBminus() - order.getBminus());
+        bloodBank.getBlood().setOminus(bloodBank.getBlood().getOminus() - order.getOminus());
+        bloodBankRepository.save(bloodBank);
     }
 
     @Transactional

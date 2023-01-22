@@ -1,9 +1,9 @@
 insert into blood(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus)
-values(1001,2, 4, 0, 0, 5, 3, 2, 7);
+values(1001, 500, 500, 500, 500, 500, 500, 500, 500);
 insert into blood(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus)
-values(1002,1, 0, 0, 0, 0, 8, 7, 0);
+values(1002, 500, 500, 500, 500, 500, 500, 500, 500);
 insert into blood(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus)
-values(1003,0, 0, 1, 3, 5, 5, 9, 3);
+values(1003, 500, 500, 500, 500, 500, 500, 500, 500);
 
 
 insert into address
@@ -123,7 +123,7 @@ insert into users
 values(103, '2000-05-05', 'nikola436346@gmail.com', 'Nikola', 1, 'Rosic', '123', 2, 'milica', 1013);
 
 INSERT INTO scheduled_order(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus, bank_email, day_of_month, hospital_email)
-	VALUES (1000, 1, 0, 0, 0, 0, 0, 0, 0, 'bloodymary@gmail.com', 1, 'zdravocorp2022@gmail.com');
+	VALUES (1000, 1, 0, 0, 0, 0, 0, 0, 0, 'bloodymary@gmail.com', 22, 'zdravocorp2022@gmail.com');
 
 insert into admin
 values(101, 10);

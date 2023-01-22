@@ -1,29 +1,35 @@
 package com.example.BloodBank;
 
 
+import com.example.BloodBank.service.ScheduledOrderService;
+import com.example.BloodBank.service.service_interface.IScheduledOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.example.BloodBank.service.RabbitMQSender;
 
-import java.util.Date;
-import java.util.UUID;
-
 @Component
 public class ScheduledTasks {
 
     private final RabbitMQSender rabbitMQSender;
 
+    private final IScheduledOrderService scheduledOrderService;
+
     @Autowired
-    public ScheduledTasks(RabbitMQSender rabbitMQSender) {
+    public ScheduledTasks(RabbitMQSender rabbitMQSender, IScheduledOrderService scheduledOrderService) {
         this.rabbitMQSender = rabbitMQSender;
+        this.scheduledOrderService = scheduledOrderService;
     }
-//    @Scheduled(fixedRate = 3000)
-//    public void sendMessage() {
-//       MessageDto message = new MessageDto("AAA Random message from Java client: " + UUID.randomUUID().toString(),
-//               new Date());
-//        rabbitMQSender.send(message);
-//        System.out.println("Sent :" + message.toString());
-//    }
+
+    @Scheduled(cron = "0 0 8 * * ?", zone = "Europe/Berlin")
+    //@Scheduled(fixedRate = 3000)
+    public void sendMessage() {
+        System.out.println("RabbitMQ sent message");
+        try {
+            scheduledOrderService.sendOrders();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

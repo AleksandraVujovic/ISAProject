@@ -2,6 +2,7 @@ package com.example.BloodBank.service.service_interface;
 
 import com.example.BloodBank.dto.BloodBankDTO;
 import com.example.BloodBank.model.BloodBank;
+import com.example.BloodBank.model.ScheduledOrder;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
@@ -56,4 +57,7 @@ public interface IBloodBankService  {
 
     Integer sendBlood(String bankEmail, String bloodType, int quantity);
     Boolean savePDF(String bankEmail, byte[] pdf);
+
+    boolean checkIfBloodSupplyAvailable(String bankEmail, ScheduledOrder order);
+    void reduceBloodSupply(String bankEmail, ScheduledOrder order) throws Exception;
 }
