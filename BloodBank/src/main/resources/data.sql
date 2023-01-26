@@ -73,14 +73,14 @@ values('123123', '066422222', 'student', 'ftn', 1025);
 insert into customer
 values('321321', '066433123', 'student', 'pmf', 1026);
 
-insert into complaints(answer, complaint_id, complaint_status, complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id)
-values('', 1027, 'UNANSWERED', 0, 'Predugo se ovde ceka', 'newlife@gmail.com','2022-12-12', 1023, null);
-insert into complaints(answer, complaint_id, complaint_status,complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id)
-values('Zao nam je zbog utiska koji zgrada ostavlja na vas.', 1028, 'ANSWERED', 0, 'Zgrada je ocajna', 'bloodymary@gmail.com','2022-11-12', 1024, 1019);
-insert into complaints(answer, complaint_id, complaint_status,complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id)
-values('', 1029, 'UNANSWERED', 1, 'Jako neprijatna radnica!', 'saska@gmail.com','2022-12-02', 1025, null);
-insert into complaints(answer, complaint_id, complaint_status,complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id)
-values('Stupicemo u kontakt sa zaposlenim!', 1030, 'ANSWERED', 1, 'Izderao se na mene u hodniku', 'halid@gmail.com','2022-10-23', 1026, 1019);
+insert into complaints(answer, complaint_id, complaint_status, complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id, version)
+values('', 1027, 'UNANSWERED', 0, 'Predugo se ovde ceka', 'newlife@gmail.com','2022-12-12', 1023, null, 0);
+insert into complaints(answer, complaint_id, complaint_status,complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id, version)
+values('Zao nam je zbog utiska koji zgrada ostavlja na vas.', 1028, 'ANSWERED', 0, 'Zgrada je ocajna', 'bloodymary@gmail.com','2022-11-12', 1024, 1019, 1);
+insert into complaints(answer, complaint_id, complaint_status,complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id, version)
+values('', 1029, 'UNANSWERED', 1, 'Jako neprijatna radnica!', 'saska@gmail.com','2022-12-02', 1025, null, 0);
+insert into complaints(answer, complaint_id, complaint_status,complaint_type, description, email_of_defendant, submission_date, customer_id, head_admin_id, version)
+values('Stupicemo u kontakt sa zaposlenim!', 1030, 'ANSWERED', 1, 'Izderao se na mene u hodniku', 'halid@gmail.com','2022-10-23', 1026, 1019, 1);
 
 --insert into appointment(id, appointment_date, start_time, end_time, executed, blood_bank_id, customer_id, confirmation_code)
 --

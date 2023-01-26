@@ -51,7 +51,7 @@ public class ComplaintService implements IComplaintService {
             complaint.get().setComplaintStatus(ComplaintStatus.ANSWERED);
             complaint.get().setAnswer(entity.getAnswer());
             complaint.get().setHeadAdmin(headAdminService.Read(entity.getHeadAdmin().getId()));
-            return complaintRepository.save(complaint.get());
+            return save(complaint.get());
         } else {
             throw new EntityDoesntExistException(entity.getComplaintID());
         }
@@ -104,7 +104,13 @@ public class ComplaintService implements IComplaintService {
         return complaintDTO;
     }
 
-    public Optional<Complaint> findById(Number id) {
+    @Override
+    public Complaint save(Complaint complaintToUpdate) {
+        return complaintRepository.save(complaintToUpdate);
+    }
+
+    @Override
+    public Optional<Complaint> findById(long id) {
         if(!complaintRepository.findById(id).isPresent())
             throw new IllegalStateException("Customer with that kind of email doesn't exist!");
         return complaintRepository.findById(id);

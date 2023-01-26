@@ -34,6 +34,8 @@ public class Complaint implements Serializable {
     private ComplaintStatus complaintStatus;
     @NotNull
     private String emailOfDefendant;
+    @Version
+    private Integer version;
     public Complaint() {
     }
 
