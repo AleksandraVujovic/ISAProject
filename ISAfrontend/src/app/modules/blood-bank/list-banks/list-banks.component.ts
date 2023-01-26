@@ -47,8 +47,12 @@ export class ListBanksComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.bloodBankSource = new BloodBankSource(this.bloodBankService);
-    this.bloodBankSource.loadBloodBanks();
+    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
+      this.router.navigate(['/password-change']);
+    else{
+      this.bloodBankSource = new BloodBankSource(this.bloodBankService);
+      this.bloodBankSource.loadBloodBanks();
+    }
   }
 
   ngAfterViewInit() {

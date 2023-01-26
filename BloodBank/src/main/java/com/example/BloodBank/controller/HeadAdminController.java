@@ -10,9 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/head_admin")
@@ -32,7 +36,16 @@ public class HeadAdminController {
     )
     @CrossOrigin("http://localhost:4200")
     @PreAuthorize("hasRole('ROLE_HEADADMIN')")
-    public ResponseEntity<Object> registerHeadAdmin(@Valid @RequestBody RegisterHeadAdminDTO headAdminDTO){
+    public ResponseEntity<Object> registerHeadAdmin(@Valid @RequestBody RegisterHeadAdminDTO headAdminDTO, BindingResult bindingResult){
+
+        if(bindingResult.hasErrors()){
+            System.err.println("error!");
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error:bindingResult.getFieldErrors()){
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            return new ResponseEntity<>(errors, HttpStatus.NOT_ACCEPTABLE);
+        }
         try {
             headAdminService.registerHeadAdmin(headAdminMapper.fromDTO(headAdminDTO));
             return new ResponseEntity<>(true,

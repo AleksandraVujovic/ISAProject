@@ -12,21 +12,21 @@ public class Address implements Serializable {
     private Long id;
     @NotNull
     @NotBlank
-    //@Pattern(regexp="([A-Z][a-z]+)(\\s[A-Z][a-z]+)*", message="Invalid country input!")
+    @Pattern(regexp="([A-Z][a-z]+)(\\s[A-Z][a-z]+)*", message="Invalid country input!")
     private String country;
 
     @NotNull
     @NotBlank
-    //@Pattern(regexp="([A-Z][a-z]+)(\\s[A-Z][a-z]+)*", message="Invalid city input!")
+    @Pattern(regexp="([A-Z][a-z]+)(\\s[A-Z][a-z]+)*", message="Invalid city input!")
     private String city;
 
     @NotNull
     @NotBlank
-    //@Pattern(regexp="([A-Z][a-z]+)(\\s[A-Z]?[a-z]+)*", message="Invalid street input!")
+    @Pattern(regexp="([A-Z][a-z]+)(\\s[A-Z]?[a-z]+)*", message="Invalid street input!")
     private String street;
     @NotNull
     @NotBlank
-    //@Pattern(regexp="([0-9]{1,3})[A-Z]?", message="Invalid street number input!")
+    @Pattern(regexp="([0-9]{1,3})[A-Z]?", message="Invalid street number input!")
     private String number;
     public Address() {
     }
