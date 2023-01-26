@@ -38,9 +38,11 @@ const routes: Routes = [
   },
   { path: 'find-appointment', component: FindAppointmentComponent },
   //{ path: 'answer-questionaire', component: AnswerQuestionaireComponent },
-  { path: 'view-customers-appiontments', component: ViewCustomersAppointmentComponent },
+  { path: 'view-customers-appiontments/:id', component: ViewCustomersAppointmentComponent },
   { path: 'start-appointment', component: StartAppointmentComponent },
-  { path: 'select-appointment/:id', component: SelectAppointmentComponent },
+  { path: 'select-appointment', component: SelectAppointmentComponent,
+  canActivate: [Guard],
+  data: { permittedRoles: ['ROLE_ADMIN'] } },
   {
     path: 'answer-form/:id',
     component: AnswerFormComponent,

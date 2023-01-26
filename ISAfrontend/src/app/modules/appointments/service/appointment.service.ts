@@ -12,7 +12,7 @@ import { Appointment } from '../model/appointment.model';
     providedIn: 'root',
   })
 
-  export class AppointmentService{
+  export class AppointmentService1{
 
     selectedAppointment : Appointment;
     apiHost: string = 'http://localhost:8086/';
@@ -30,5 +30,9 @@ import { Appointment } from '../model/appointment.model';
     }
     updateAppointment(appointment : Appointment): Observable<any>{
         return this.http.post<any>(this.apiHost + 'api/appointment/byAdmin',appointment,{headers: this.headers});
+    }
+
+    getAppointmentById(id: any): Observable<Appointment>{
+      return this.http.get<any>(this.apiHost + 'api/appointment/' + id , {headers: this.headers});
     }
   }

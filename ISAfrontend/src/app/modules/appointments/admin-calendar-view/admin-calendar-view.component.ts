@@ -21,6 +21,7 @@ import { EventColor } from 'calendar-utils';
 import { AppointmentService } from '../services/appointment.service';
 import { aD } from '@fullcalendar/core/internal-common';
 import { Router } from '@angular/router';
+import { AppointmentService1 } from '../service/appointment.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -62,7 +63,7 @@ export class AdminCalendarViewComponent implements OnInit {
   public errorMessage: Error = new Error();
   public errorMap: Map<string, string> = new Map();
 
-  constructor(private appointmentService: AppointmentService, private toastr: ToastrService, private router: Router) {}
+  constructor(private appointmentService: AppointmentService, private appointmentService1 : AppointmentService1, private toastr: ToastrService, private router: Router) {}
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -81,7 +82,17 @@ export class AdminCalendarViewComponent implements OnInit {
   eventClicked(action: string, event: CalendarEvent): void {
     console.log("usla u handleeee sam")
     this.modalData = { event, action };
-    console.log(this.modalData.event)
+    console.log(this.modalData.event.id);
+    this.appointmentService1.getAppointmentById(this.modalData.event.id).subscribe(res => {
+      if(res.executed.toString()   == 'PENDING'){
+        this.appointmentService1.selectedAppointment = res;
+        console.log(res);
+        this.router.navigate(['start-appointment']);
+      }else{
+        this.toastr.show("Appointment status is " + res.executed.toString());
+      }
+        
+    });
   }
 
   eventTimesChanged({

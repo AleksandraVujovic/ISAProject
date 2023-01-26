@@ -29,10 +29,10 @@
                         </tr>
                     </tbody>
                 </table>
-                <button [disabled]="disabled" (click)="updateNotCome()">Customer did not come</button>
+                <input [disabled] = "disabled" (click)="updateNotCome()" value="Customer did not come" class="btn btn-primary btn-lg submit">
                 <br>
                 <br>
-                <button [disabled]="disabled" (click)="updateCome()">Customer comes</button>
+                <input [disabled]="disabled" (click)="updateCome()" value = "Customer comes" class="btn btn-primary btn-lg submit">
           
             </div>
         </div>

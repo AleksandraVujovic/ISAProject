@@ -5,7 +5,7 @@ import { Customer } from 'src/app/model/Users/customer';
 import { CustomerService } from '../../user/services/customer.service';
 import { AppointmentStatus } from '../model/appointment-status.enum';
 import { Appointment } from '../model/appointment.model';
-import { AppointmentService } from '../service/appointment.service';
+import { AppointmentService1 } from '../service/appointment.service';
 import { QuestionnaireService } from '../services/questionnaire.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class ViewCustomersAppointmentComponent implements OnInit {
   disabled: boolean;
 
   constructor(
-    private appointmentService : AppointmentService,
+    private appointmentService : AppointmentService1,
     private customerService : CustomerService,
     private router: Router,
     private toastr: ToastrService) { }

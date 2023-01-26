@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppointmentStatus } from '../model/appointment-status.enum';
 import { Appointment } from '../model/appointment.model';
 import { BloodType } from '../model/blood-type.enum';
-import { AppointmentService } from '../service/appointment.service';
+import { AppointmentService1 } from '../service/appointment.service';
 
 @Component({
   selector: 'app-start-appointment',
@@ -19,7 +19,7 @@ export class StartAppointmentComponent implements OnInit {
  public selectedBloodType: string;
 
   constructor(
-    private appointmentService : AppointmentService,
+    private appointmentService : AppointmentService1,
     private router: Router,
     private toastr: ToastrService) { }
 

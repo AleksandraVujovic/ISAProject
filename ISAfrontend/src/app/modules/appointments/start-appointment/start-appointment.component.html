@@ -24,11 +24,11 @@
                 <p>Comment:</p>
                 <textarea [(ngModel)]="selectedAppointment.comment"></textarea>
             </div>
-              <button (click)="UpdateAppointment()">Submit</button>
+              <input (click)="UpdateAppointment()" class="btn btn-primary btn-lg submit" value="Submit">
             <br>
             <br>
             <br>
-            <button (click)="seeQuestionnaire()">See questionnaire</button>
+            <input (click)="seeQuestionnaire()" class="btn btn-primary btn-lg submit" value="See questionnaire">
             </div>
         </div>
       </div>
