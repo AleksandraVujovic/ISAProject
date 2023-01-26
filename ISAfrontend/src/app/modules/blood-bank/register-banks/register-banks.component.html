@@ -148,11 +148,55 @@
                             </span>
                           <label class="form-label" for="streetNumber">Street Number</label>
                         </div>
-      
                       </div>
+                  </div>
+                <div class="row">
+                  <div class=" form-outline col-md-6 mb-4 pb-2">
+  
+                    <input type="number" class="input form-control"
+                    [(ngModel)]="bloodBank.startTime" min="0" max="24"
+                    name="startTime" required
+                    #startTimeVar="ngModel" [ngClass]="{'is-invalid': ((startTimeVar.touched || startTimeVar.dirty) && !startTimeVar.valid)
+                      || (bloodBank.startTime > bloodBank.endTime) }">
+                    <span class="invalid-feedback">
+                      <span *ngIf="startTimeVar.errors?.['required']">
+                          Please choose start of work time.
+                      </span>
+                      <span *ngIf="bloodBank.startTime > 23 || bloodBank.startTime < 0">
+                        Time has to be between 0 and 23 hours.
+                      </span>
+                      <span *ngIf="bloodBank.startTime > bloodBank.endTime">
+                        Start time has to be before end time.
+                      </span>
+                    </span>
+                    <label class="form-label select-label">Choose start of work time</label>
+  
+                  </div>
+                  <div class=" form-outline col-md-6 mb-4 pb-2">
+  
+                    <input type="number" class="input form-control"
+                    [(ngModel)]="bloodBank.endTime" min="0" max="23"
+                    name="endTime" required
+                    #endTimeVar="ngModel" [ngClass]="{'is-invalid': ((endTimeVar.touched || endTimeVar.dirty) && !endTimeVar.valid) 
+                    || (bloodBank.startTime > bloodBank.endTime)}">
+                    <span class="invalid-feedback">
+                      <span *ngIf="endTimeVar.errors?.['required']">
+                          Please choose end of work time.
+                      </span>
+                      <span *ngIf="bloodBank.endTime > 23 || bloodBank.endTime < 0">
+                        Time has to be between 0 and 23 hours.
+                      </span>
+                      <span *ngIf="bloodBank.startTime > bloodBank.endTime">
+                        End time has to be after start time.
+                      </span>
+                    </span>
+                    <label class="form-label select-label">Choose end of work time</label>
+  
+                  </div>
                 </div>
+                  
                 <div>
-                  <input class="btn btn-primary submit" type="submit" value="Register"  [disabled]="!registrationForm.valid"/>
+                  <input class="btn btn-primary submit" type="submit" value="Register"  [disabled]="!registrationForm.valid || (bloodBank.startTime > bloodBank.endTime)"/>
                 </div>
   
               </form>

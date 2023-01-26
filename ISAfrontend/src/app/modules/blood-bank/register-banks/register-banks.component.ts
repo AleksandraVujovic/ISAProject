@@ -34,7 +34,7 @@ export class RegisterBanksComponent implements OnInit {
   }
 
   saveBank(registrationForm: NgForm): void {
-    if (registrationForm.dirty && registrationForm.valid) {
+    if (registrationForm.dirty && registrationForm.valid && (this.bloodBank.startTime <= this.bloodBank.endTime)) {
       this.registerBloodBank();
     }
   }

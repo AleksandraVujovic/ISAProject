@@ -1,6 +1,7 @@
 package com.example.BloodBank.service.service_interface;
 
 import com.example.BloodBank.dto.BloodBankDTO;
+import com.example.BloodBank.dto.RegistrationBloodBankDTO;
 import com.example.BloodBank.model.BloodBank;
 import com.example.BloodBank.model.ScheduledOrder;
 import org.springframework.cache.annotation.CacheEvict;
@@ -40,7 +41,7 @@ public interface IBloodBankService  {
     void checkAPIKey(String bankEmail, String APIKey) throws IllegalAccessException;
 
     @CacheEvict(cacheNames = {"bloodBanks", "bloodBanksPageable"}, allEntries = true)
-    void registerBloodBank(BloodBankDTO bloodBank);
+    void registerBloodBank(RegistrationBloodBankDTO registrationBloodBankDTO);
     @Cacheable(value = "bloodBanks")
     List<BloodBank> getAll() throws Exception;
 
