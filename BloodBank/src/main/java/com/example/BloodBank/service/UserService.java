@@ -2,7 +2,7 @@ package com.example.BloodBank.service;
 
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.User;
-import com.example.BloodBank.service.service_interface.repository.UserRepository;
+import com.example.BloodBank.repository.UserRepository;
 import com.example.BloodBank.service.service_interface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

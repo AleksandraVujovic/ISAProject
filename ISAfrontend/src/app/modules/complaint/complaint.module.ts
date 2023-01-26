@@ -18,8 +18,8 @@ import { AnswerComplaintComponent } from './answer-complaint/answer-complaint.co
 import { Guard } from '../auth/guard';
 
 const routes: Routes = [
-  { path: 'admin-view-complaints', component: AdminViewComplaintsComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN"]} },
-  { path: 'answer-complaint/:id', component: AnswerComplaintComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN"]}},
+  { path: 'admin-view-complaints', component: AdminViewComplaintsComponent, canActivate:[Guard], data:{permittedRoles:["ROLE_HEADADMIN"]} },
+  { path: 'answer-complaint/:id', component: AnswerComplaintComponent, canActivate:[Guard], data:{permittedRoles:["ROLE_HEADADMIN"]}},
 ];
 
 @NgModule({

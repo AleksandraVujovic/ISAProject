@@ -3,7 +3,7 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.dto.complaintDTOs.ComplaintDTO;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.*;
-import com.example.BloodBank.service.service_interface.repository.ComplaintRepository;
+import com.example.BloodBank.repository.ComplaintRepository;
 import com.example.BloodBank.service.service_interface.IComplaintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

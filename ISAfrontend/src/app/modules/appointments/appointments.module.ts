@@ -47,7 +47,7 @@ const routes: Routes = [
     canActivate: [Guard],
     data: { permittedRoles: ['ROLE_CUSTOMER','ROLE_ADMIN'] }
   },
-  { path: 'admin-calendar', component: AdminCalendarViewComponent }
+  { path: 'admin-calendar', component: AdminCalendarViewComponent, canActivate:[Guard], data: { permittedRoles: ['ROLE_ADMIN']} }
 ];
 
 @NgModule({

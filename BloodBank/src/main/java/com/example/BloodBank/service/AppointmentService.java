@@ -5,16 +5,14 @@ import com.example.BloodBank.model.Appointment;
 import com.example.BloodBank.model.AppointmentStatus;
 import com.example.BloodBank.model.Customer;
 import com.example.BloodBank.service.service_interface.IQrCodeService;
-import com.example.BloodBank.service.service_interface.repository.AppointmentRepository;
-import com.example.BloodBank.service.service_interface.repository.CustomerRepository;
+import com.example.BloodBank.repository.AppointmentRepository;
+import com.example.BloodBank.repository.CustomerRepository;
 import com.example.BloodBank.service.service_interface.IAppointmentService;
 import com.example.BloodBank.service.service_interface.IQuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.activation.DataSource;

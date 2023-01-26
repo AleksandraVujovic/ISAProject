@@ -34,13 +34,9 @@ public class JwtController {
     @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception{
         try{
-            if(headAdminService.isAdminWithNotChangedPassword(authRequest))
-                return "HeadAdmin with an unchanged password.";
-
             Authentication a = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.getUserName()
                             ,authRequest.getPassword())
-            //
             );
         } catch (Exception ex){
             throw new Exception("Invalid username/password");

@@ -22,15 +22,11 @@ export class AnswerComplaintComponent implements OnInit {
     private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-      this.router.navigate(['/password-change']);
-    else{
-        this.routeSub = this.route.params.subscribe(params => {
-          this.getComplaint(params['id']);
-        }, (error) => {
-          this.errorMessage = error;
-        });
-    }   
+    this.routeSub = this.route.params.subscribe(params => {
+      this.getComplaint(params['id']);
+    }, (error) => {
+      this.errorMessage = error;
+    });   
   }
   public getComplaint(id: number){
     this.complaintService.getComplaint(id).subscribe(res => {

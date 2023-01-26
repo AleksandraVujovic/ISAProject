@@ -22,9 +22,13 @@ export class HeadAdminPasswordChangeComponent implements OnInit {
   constructor(private headAdminService: HeadAdminService, private router: Router,private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.admin.username = localStorage.getItem('HeadAdminUsername')!;
-    this.admin.password = localStorage.getItem('HeadAdminPassword')!;
-    this.admin.newPassword = '';
+    if(localStorage.getItem("isPasswordChanged") != 'false')
+      this.router.navigate(['/forbidden']);
+    else{
+      this.admin.username = localStorage.getItem('HeadAdminUsername')!;
+      this.admin.password = localStorage.getItem('HeadAdminPassword')!;
+      this.admin.newPassword = '';
+    }
   }
 
   saveChanges(registrationForm: NgForm): void {
@@ -40,15 +44,19 @@ export class HeadAdminPasswordChangeComponent implements OnInit {
         if(res == true){
           localStorage.removeItem('HeadAdminUsername');
           localStorage.removeItem('HeadAdminPassword');
-          localStorage.removeItem('ForbiddenAccessToHeadAdmin');
-          this.toastr.success("Password successfully changed!");
+          localStorage.clear();
           this.toastr.info("Please login with your new password again!");
-          this.router.navigate(['/login']);
+          this.toastr.success("Password successfully changed!");
+          window.location.href = '/login';
+          return
         }
         else{
+          localStorage.clear();
           this.toastr.info("Something went wrong, please try again later!");
-          this.router.navigate(['/']);
+          window.location.href = '/';
+          return
         }
+        
       }, (error) => {
         console.log(error)
         this.errorMessage = error;
@@ -57,7 +65,8 @@ export class HeadAdminPasswordChangeComponent implements OnInit {
   }
 
   checkPassword(){
-    if(this.oldPass == this.admin.password && this.verifyPass == this.admin.newPassword)
+    if(this.oldPass == this.admin.password && this.verifyPass == this.admin.newPassword 
+        && this.admin.password != this.admin.newPassword)
       this.isDisabled = false;
     else
       this.isDisabled = true;

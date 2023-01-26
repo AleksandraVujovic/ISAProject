@@ -118,13 +118,9 @@ export class AdminCalendarViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(localStorage.getItem("loggedUserRole") != "ROLE_ADMIN")
-        this.router.navigate(['/forbidden']);
-    else{
-      let adminId = localStorage.getItem('loggedUserId');
-      if(adminId != null) {
-        this.getDoneAndPendingAppointmentsForBloodBank(Number(adminId));
-      }
+    let adminId = localStorage.getItem('loggedUserId');
+    if(adminId != null) {
+      this.getDoneAndPendingAppointmentsForBloodBank(Number(adminId));
     } 
   }
 

@@ -1,6 +1,8 @@
 package com.example.BloodBank.Utils;
 
+import com.example.BloodBank.model.HeadAdmin;
 import com.example.BloodBank.service.CustomUserDetailsService;
+import com.example.BloodBank.service.HeadAdminService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,6 +21,8 @@ public class JwtUtil {
     private String secret = "javatechie";
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private HeadAdminService headAdminService;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -46,6 +50,15 @@ public class JwtUtil {
         userDetailsService.loadUserByUsername(username).getAuthorities();
         claims.put("role", userDetailsService.loadUserByUsername(username).getAuthorities().toArray()[1]);
         claims.put("id", userDetailsService.loadUserByUsername(username).getAuthorities().toArray()[0]);
+
+        if(userDetailsService.loadUserByUsername(username).getAuthorities().toArray()[1].toString().equals("ROLE_HEADADMIN")){
+            if(!headAdminService.findByUsername(username).get().isPasswordChanged())
+                claims.put("isPasswordChanged", "false");
+            else
+                claims.put("isPasswordChanged", "true");
+        }
+        else
+            claims.put("isPasswordChanged", "notHeadAdmin");
         return createToken(claims, username);
     }
 

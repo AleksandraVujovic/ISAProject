@@ -3,8 +3,8 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.exceptions.EmailTakenException;
 import com.example.BloodBank.exceptions.UsernameTakenException;
 import com.example.BloodBank.model.*;
-import com.example.BloodBank.service.service_interface.repository.HeadAdminRepository;
-import com.example.BloodBank.service.service_interface.repository.UserRepository;
+import com.example.BloodBank.repository.HeadAdminRepository;
+import com.example.BloodBank.repository.UserRepository;
 import com.example.BloodBank.service.service_interface.IHeadAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -66,14 +66,6 @@ public class HeadAdminService implements IHeadAdminService {
         return null;
     }
     @Override
-    public boolean isAdminWithNotChangedPassword(AuthRequest authRequest) {
-        Optional<HeadAdmin> admin = headAdminRepository.findByUsername(authRequest.getUserName());
-        if(admin.isPresent() && admin.get().getPassword().equals(authRequest.getPassword()) && !admin.get().isPasswordChanged())
-            return true;
-        return false;
-    }
-
-    @Override
     @Transactional
     public boolean resetAdminsPassword(HeadAdmin admin, String newPass){
         Optional<HeadAdmin> headAdmin = headAdminRepository.findByUsername(admin.getUsername());
@@ -90,4 +82,12 @@ public class HeadAdminService implements IHeadAdminService {
         }
         return false;
     }
+
+    @Override
+    public Optional<HeadAdmin> findByUsername(String username) {
+        if(!headAdminRepository.findByUsername(username).isPresent())
+            throw new IllegalStateException("Head admin with that kind of username doesn't exist!");
+        return headAdminRepository.findByUsername(username);
+    }
+
 }

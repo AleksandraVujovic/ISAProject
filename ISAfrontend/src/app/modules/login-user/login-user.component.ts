@@ -21,22 +21,11 @@ export class LoginUserComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-      console.log(localStorage.getItem('ForbiddenAccessToHeadAdmin'))
-  }
+  ngOnInit(): void {  }
 
   Login() {
     this.loginService.login(this.loginUser).subscribe(
       (response: any) => {
-        if(response == "HeadAdmin with an unchanged password."){
-          console.log("ovde sam uu")
-          localStorage.setItem("HeadAdminUsername", this.loginUser.userName);
-          localStorage.setItem("HeadAdminPassword", this.loginUser.password);
-          localStorage.setItem("ForbiddenAccessToHeadAdmin", 'true');
-          this.router.navigate(['/password-change']);
-        }else{
-          console.log("ovde sam")
           this.token = response;
           localStorage.setItem('token', this.token);
           console.log(this.token);
@@ -47,11 +36,18 @@ export class LoginUserComponent implements OnInit {
           this.id = decodedJWT.id.authority;
           localStorage.setItem('loggedUserId', this.id);
           console.log(this.id);
+
+          localStorage.setItem('isPasswordChanged', decodedJWT.isPasswordChanged);
+          if(decodedJWT.isPasswordChanged == "false"){
+            localStorage.setItem("HeadAdminUsername", this.loginUser.userName);
+            localStorage.setItem("HeadAdminPassword", this.loginUser.password);
+            this.toastr.success('Successfully logged in');
+            window.location.href = '/password-change';
+            return;
+          }
+
           this.toastr.success('Successfully logged in');
-          this.router.navigate(['/']);
-          window.location.reload();
-          
-        }    
+          window.location.href = '/';
       },
       (error) => {
         console.log(error.message);

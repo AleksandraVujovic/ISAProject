@@ -3,13 +3,12 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.dto.FilledOrderDTO;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.ScheduledOrder;
-import com.example.BloodBank.service.service_interface.repository.ScheduledOrdersRepository;
+import com.example.BloodBank.repository.ScheduledOrdersRepository;
 import com.example.BloodBank.service.service_interface.IScheduledOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

@@ -25,22 +25,21 @@ export class Guard implements CanActivate {
     | UrlTree {
     if (localStorage.getItem('token') != null) {
       let token = localStorage.getItem('token');
-      let requiresPasswordChange;
+      let isPasswordChanged;
       if (token != null) {
         let decodedJWT = JSON.parse(window.atob(token.split('.')[1]));
-        requiresPasswordChange = decodedJWT.requiresPasswordChange;
-      }
-
-      // console.log(requiresPasswordChange);
-
-      if (requiresPasswordChange == 'true') {
-        this.router.navigate(['/password-change']);
-        return false;
+        isPasswordChanged = decodedJWT.isPasswordChanged;
       }
 
       let roles = route.data['permittedRoles'] as Array<string>;
       if (roles) {
-        if (this.loginService.roleMatch(roles)) return true;
+        if (this.loginService.roleMatch(roles)){ 
+          if (isPasswordChanged == 'false') {
+            this.router.navigate(['/password-change']);
+            return false;
+          }
+          return true
+        }
         else {
           this.router.navigate(['/forbidden']);
           return false;
@@ -48,10 +47,7 @@ export class Guard implements CanActivate {
       }
       return true;
     } else {
-      if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-        this.router.navigate(['/password-change']);
-      else
-        this.router.navigate(['/login']);
+      this.router.navigate(['/login']);
       return false;
     }
   }

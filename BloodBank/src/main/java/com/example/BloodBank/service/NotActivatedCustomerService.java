@@ -2,9 +2,9 @@ package com.example.BloodBank.service;
 
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.*;
-import com.example.BloodBank.service.service_interface.repository.CustomerRepository;
-import com.example.BloodBank.service.service_interface.repository.NotActivatedCustomerRepository;
-import com.example.BloodBank.service.service_interface.repository.UserRepository;
+import com.example.BloodBank.repository.CustomerRepository;
+import com.example.BloodBank.repository.NotActivatedCustomerRepository;
+import com.example.BloodBank.repository.UserRepository;
 import com.example.BloodBank.service.service_interface.INotActivatedCustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

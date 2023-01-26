@@ -17,10 +17,7 @@ export class RegisterBanksComponent implements OnInit {
 
   constructor(private bloodBankService: BloodBankService, private router: Router,private toastr: ToastrService) { }
 
-  ngOnInit(): void {
-    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-      this.router.navigate(['/password-change']);
-  }
+  ngOnInit(): void {  }
 
   public registerBloodBank(){
 

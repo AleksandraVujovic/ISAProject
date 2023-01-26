@@ -1,4 +1,4 @@
-package com.example.BloodBank.service.service_interface.repository;
+package com.example.BloodBank.repository;
 
 import com.example.BloodBank.model.Address;
 import com.example.BloodBank.model.BloodBank;

@@ -26,10 +26,7 @@ export class AdminViewComplaintsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-      this.router.navigate(['/password-change']);
-    else
-      this.getUnansweredComplaints(0, this.tableSize);    
+    this.getUnansweredComplaints(0, this.tableSize);    
   }
 
   public getUnansweredComplaints(page: number = 0, size: number = 5): void{

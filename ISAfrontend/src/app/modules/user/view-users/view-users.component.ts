@@ -26,10 +26,7 @@ export class ViewUsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-      this.router.navigate(['/password-change']);
     this.getUsers(0, this.tableSize, '');
-    
   }
 
   public getUsers(page: number = 0, size: number = 2,searchTerm : string = ''): void{

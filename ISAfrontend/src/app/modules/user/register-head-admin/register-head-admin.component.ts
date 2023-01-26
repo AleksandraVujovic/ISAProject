@@ -23,10 +23,7 @@ export class RegisterHeadAdminComponent implements OnInit {
   public todaysDate: Date = new Date();
   constructor(private headAdminService: HeadAdminService, private router: Router,private toastr: ToastrService) { }
 
-  ngOnInit(): void {
-    if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
-      this.router.navigate(['/password-change']);
-  }
+  ngOnInit(): void {  }
 
   public registerHeadAdmin(){
 

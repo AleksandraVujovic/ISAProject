@@ -1,4 +1,4 @@
-package com.example.BloodBank.service.service_interface.repository;
+package com.example.BloodBank.repository;
 
 import com.example.BloodBank.model.ScheduledOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
