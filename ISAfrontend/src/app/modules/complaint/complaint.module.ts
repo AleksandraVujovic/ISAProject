@@ -15,10 +15,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AdminViewComplaintsComponent } from './admin-view-complaints/admin-view-complaints.component';
 import { AnswerComplaintComponent } from './answer-complaint/answer-complaint.component';
+import { Guard } from '../auth/guard';
 
 const routes: Routes = [
-  { path: 'admin-view-complaints', component: AdminViewComplaintsComponent },
-  { path: 'answer-complaint/:id', component: AnswerComplaintComponent},
+  { path: 'admin-view-complaints', component: AdminViewComplaintsComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN"]} },
+  { path: 'answer-complaint/:id', component: AnswerComplaintComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN"]}},
 ];
 
 @NgModule({

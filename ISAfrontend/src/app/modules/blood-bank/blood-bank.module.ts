@@ -12,7 +12,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Guard } from '../auth/guard';
 
 const routes: Routes = [
-  { path: 'register-banks', component: RegisterBanksComponent },
+  { path: 'register-banks', component: RegisterBanksComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN"]} },
   {
     path: 'list-banks',
     component: ListBanksComponent,

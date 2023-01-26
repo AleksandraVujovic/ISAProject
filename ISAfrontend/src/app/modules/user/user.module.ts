@@ -30,15 +30,14 @@ import { HeadAdminPasswordChangeComponent } from './head-admin-password-change/h
 
 const routes: Routes = [
   { path: 'edit-user', component: EditUserComponent },
-  { path: 'register-admin', component: RegisterAdminComponent },
+  { path: 'register-admin', component: RegisterAdminComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_ADMIN"]} },
   { path: 'admin-home-page', component: AdminHomePageComponent },
   { path: 'admins-profile', component: AdminsProfileComponent },
   { path: 'admins-blood-bank', component: AdminsBloodbankComponent },
   { path: 'edit-user', component: EditUserComponent },
   { path: 'register-customer', component: RegisterCustomerComponent },
-  { path: 'register-admin', component: RegisterAdminComponent },
   { path: 'fill-form', component: FillFormComponent },
-  { path: 'view-users', component: ViewUsersComponent },
+  { path: 'view-users', component: ViewUsersComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN", "ROLE_ADMIN"]} },
   { path: 'view-customers', component: ViewCustomersComponent},
 
   {
@@ -50,7 +49,7 @@ const routes: Routes = [
   { path: 'view-users', component: ViewUsersComponent },
   { path: 'login', component: LoginUserComponent },
   { path: 'my-appointments', component: MyAppointmentsComponent },
-  { path: 'register-head-admin', component: RegisterHeadAdminComponent },
+  { path: 'register-head-admin', component: RegisterHeadAdminComponent, canActivate:[Guard], data:{permitterRoles:["ROLE_HEADADMIN"]} },
   { path: 'password-change', component: HeadAdminPasswordChangeComponent }
 ];
 

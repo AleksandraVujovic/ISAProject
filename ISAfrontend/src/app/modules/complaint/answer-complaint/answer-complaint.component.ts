@@ -25,15 +25,11 @@ export class AnswerComplaintComponent implements OnInit {
     if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
       this.router.navigate(['/password-change']);
     else{
-      if(localStorage.getItem("loggedUserRole") != "ROLE_HEADADMIN")
-        this.router.navigate(['/forbidden']);
-      else{
         this.routeSub = this.route.params.subscribe(params => {
           this.getComplaint(params['id']);
         }, (error) => {
           this.errorMessage = error;
         });
-      }
     }   
   }
   public getComplaint(id: number){

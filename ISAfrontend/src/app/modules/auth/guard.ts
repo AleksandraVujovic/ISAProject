@@ -48,7 +48,10 @@ export class Guard implements CanActivate {
       }
       return true;
     } else {
-      this.router.navigate(['/login']);
+      if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
+        this.router.navigate(['/password-change']);
+      else
+        this.router.navigate(['/login']);
       return false;
     }
   }

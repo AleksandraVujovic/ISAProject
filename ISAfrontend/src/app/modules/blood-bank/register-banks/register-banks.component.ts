@@ -20,10 +20,6 @@ export class RegisterBanksComponent implements OnInit {
   ngOnInit(): void {
     if(localStorage.getItem('ForbiddenAccessToHeadAdmin') == 'true')
       this.router.navigate(['/password-change']);
-    else{
-      if(localStorage.getItem("loggedUserRole") != "ROLE_HEADADMIN")
-        this.router.navigate(['/forbidden']);
-    }
   }
 
   public registerBloodBank(){
