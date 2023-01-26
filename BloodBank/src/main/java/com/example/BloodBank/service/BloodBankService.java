@@ -1,6 +1,7 @@
 package com.example.BloodBank.service;
 
 import com.example.BloodBank.dto.BloodBankDTO;
+import com.example.BloodBank.dto.RegistrationBloodBankDTO;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.BloodBank;
 import com.example.BloodBank.model.ScheduledOrder;
@@ -18,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.sql.Time;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -92,8 +95,11 @@ public class BloodBankService implements IBloodBankService {
     }
 
     @Transactional
-    public void registerBloodBank(BloodBankDTO bloodBankDTO){
-        BloodBank bloodBank = modelMapper.map(bloodBankDTO, BloodBank.class);
+    public void registerBloodBank(RegistrationBloodBankDTO registrationBloodBankDTO){
+        BloodBank bloodBank = modelMapper.map(registrationBloodBankDTO, BloodBank.class);
+        bloodBank.setStartDayWorkTime(Time.valueOf(LocalTime.of(registrationBloodBankDTO.getStartTime(), 0)));
+        bloodBank.setEndDayWorkTime(Time.valueOf(LocalTime.of(registrationBloodBankDTO.getEndTime(), 0)));
+        bloodBank.setNumberOfWorkingDaysInWeek(5);
         try{
             bloodBankRepository.save(bloodBank);
         }catch(Exception e){

@@ -3,6 +3,7 @@ package com.example.BloodBank.controller;
 import adapters.BloodBankMapper;
 import com.example.BloodBank.dto.BloodBankDTO;
 import com.example.BloodBank.dto.PagableRequestDTO;
+import com.example.BloodBank.dto.RegistrationBloodBankDTO;
 import com.example.BloodBank.dto.appointmentDTOs.AppointmentViewDTO;
 import com.example.BloodBank.model.*;
 import com.example.BloodBank.service.BloodBankService;
@@ -145,7 +146,7 @@ public class BloodBankController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> registerBloodBank(@Valid @RequestBody BloodBankDTO bloodBankDTO, BindingResult bindingResult){
+    public ResponseEntity<Object> registerBloodBank(@Valid @RequestBody RegistrationBloodBankDTO registrationBloodBankDTO, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             System.err.println("error!");
@@ -156,7 +157,7 @@ public class BloodBankController {
             return new ResponseEntity<>(errors, HttpStatus.NOT_ACCEPTABLE);
         }
         try{
-            bloodBankService.registerBloodBank(bloodBankDTO);
+            bloodBankService.registerBloodBank(registrationBloodBankDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         catch(Exception e){

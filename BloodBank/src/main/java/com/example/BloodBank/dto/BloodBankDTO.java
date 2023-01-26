@@ -19,7 +19,6 @@ public class BloodBankDTO {
     @Valid
     private Address address;
     private String description;
-
     private double rating;
 
 //    @Size(min = 1, max = 10, message="Max 10 admins for a bank allowed")

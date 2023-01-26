@@ -7,6 +7,8 @@ export class BloodBank {
   description: string = '';
   address: Address = new Address();
   rating: number = 0.0;
+  endTime: number = 23;
+  startTime: number = 0;
 
   public constructor(obj?: any) {
     if (obj) {
@@ -16,6 +18,8 @@ export class BloodBank {
       this.description = obj?.description ?? '';
       this.address = obj.address;
       this.rating = obj?.rating ?? 0.0;
+      this.endTime = obj?.endTime ?? 23;
+      this.startTime = obj?.startTime ?? 0;
     }
   }
 }
