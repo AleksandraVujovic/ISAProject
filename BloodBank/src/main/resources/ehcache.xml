@@ -32,11 +32,11 @@
         </listeners>
 
         <resources>
-            <!-- 10000 objekata na Java heapu -->
-            <heap>10</heap>
-            <!-- 1000MB u RAMu se čuva -->
+            <!-- 100 objekata na Java heapu -->
+            <heap>100</heap>
+            <!-- 10MB u RAMu se čuva -->
             <offheap unit="MB">10</offheap>
-            <!-- 5000MB na disku se čuva -->
+            <!-- 100MB na disku se čuva -->
             <disk persistent="true" unit="MB">100</disk>
         </resources>
     </cache-template>
