@@ -1,5 +1,6 @@
 import { Time } from "@angular/common";
-import { BloodBank } from "src/app/model/blood-bank.model";
+import { BloodBank } from "../../../model/blood-bank.model";
+import { User } from "../../user/edit-user/model/user";
 import { AppointmentStatus } from "./appointment-status.enum";
 import { BloodType } from "./blood-type.enum";
 
@@ -14,6 +15,7 @@ export class Appointment{
     version: number = 0;
     typeOfBlood : BloodType = BloodType.AB_MINUS;
     quantityOfBlood: number = 0;
+    takenBy : User = new User();
     
     constructor(obj : any){
         this.id = obj.id
@@ -26,6 +28,7 @@ export class Appointment{
         this.version = obj.version;
         this.typeOfBlood = obj.typeOfBlood;
         this.quantityOfBlood = obj.quantityOfBlood;
+        this.takenBy = obj.takenBy;
     }
 
 

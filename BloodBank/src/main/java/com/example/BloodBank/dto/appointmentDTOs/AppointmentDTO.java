@@ -28,7 +28,7 @@ public class AppointmentDTO {
     private int quantityOfBlood;
     private Customer takenBy;
 
-   // private BloodBank location;
+    private BloodBank location;
 
     public AppointmentDTO(long id, Date appointmentDate, Time startTime, Time endTime, Customer takenBy
                         //  ,BloodBank location

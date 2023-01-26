@@ -18,7 +18,8 @@ export class AdminHomePageComponent implements OnInit {
   constructor(private adminService: AdminService, private router : Router) { }
   
   ngOnInit(): void {
-    this.adminService.getAdminById().subscribe(res =>{
+    
+    this.adminService.getAdminById(localStorage.getItem("loggedUserId")).subscribe(res =>{
     this.admin = res;
     this.bloodBank = res.bloodBank;
     console.log(this.admin);
@@ -35,7 +36,13 @@ export class AdminHomePageComponent implements OnInit {
     }   
     );
     //console.log(this.admin);
-    
   }
+
+  pushToProfile(){
+    this.router.navigate(['/admins-profile']);}
+  pushToBloodBank(){
+    this.router.navigate(['/admins-blood-bank']);}
+    pushToCustomers(){
+      this.router.navigate(['/view-customers']);}
 
 }

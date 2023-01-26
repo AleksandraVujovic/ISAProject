@@ -22,7 +22,7 @@ import { Appointment } from '../model/appointment.model';
   constructor(private http: HttpClient) {}
 
     getAppointmentsByCustomerId(id : number): Observable<Appointment[]> {
-        console.log(this.apiHost + 'api/appointment/customers?id=' + id);
+        console.log(this.apiHost + 'api/appointment/customers?id=' + id, {headers: this.headers});
         
         var nesto = this.http.get<any>(this.apiHost + 'api/appointment/customer?id=' + id , {headers: this.headers});
         console.log(nesto);

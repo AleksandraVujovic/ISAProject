@@ -38,10 +38,10 @@ public class AdminController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Admin Read() {
+    @GetMapping(path = "/{id}")
+    public Admin Read(@PathVariable("id") long id) {
         try {
-            return adminService.Read(1014L);
+            return adminService.Read(id);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             if (e instanceof EntityDoesntExistException) {

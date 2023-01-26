@@ -62,7 +62,8 @@ public class AppointmentController {
     public ResponseEntity<Object> readByCustomerId(@RequestParam("id") Optional<Long> id) {
         try {
             List<Appointment> appointments = appointmentService.GetByCustomerId(Long.valueOf(id.get()));
-            return new  ResponseEntity<>(appointmentMapper.toAppointmentDTOList(appointments), HttpStatus.OK);
+            //return new  ResponseEntity<>(appointmentMapper.toAppointmentDTOList(appointments), HttpStatus.OK);
+            return new  ResponseEntity<>(appointments, HttpStatus.OK);
         } catch (Exception e){
             if(e instanceof EntityNotFoundException){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -84,9 +85,10 @@ public class AppointmentController {
 
 
     @PostMapping(path ="byAdmin",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> Update(@RequestBody AppointmentDTO appointmentDTO){
+   // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Object> Update(@RequestBody Appointment appointment){
         try{
-            Appointment appointment = appointmentMapper.fromAppointmentDTO(appointmentDTO);
+           // Appointment appointment = appointmentMapper.fromAppointmentDTO(appointmentDTO);
            // appointment.setLocation(appointmentService.Read(appointment.getId()).getLocation());
             appointment.setVersion(appointmentService.Read(appointment.getId()).getVersion());
             appointmentService.Update(appointment);

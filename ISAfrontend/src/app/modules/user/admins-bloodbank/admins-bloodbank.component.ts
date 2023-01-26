@@ -18,7 +18,8 @@ export class AdminsBloodbankComponent implements OnInit {
   constructor(private adminService: AdminService, private router : Router) { }
 
   ngOnInit(): void {
-    this.adminService.getAdminById().subscribe(res =>{
+    
+    this.adminService.getAdminById(localStorage.getItem("loggedUserId")).subscribe(res =>{
       this.admin = res;
       this.bloodBank = res.bloodBank;
       console.log(this.admin);
@@ -28,7 +29,7 @@ export class AdminsBloodbankComponent implements OnInit {
   saveChanges(registrationForm: NgForm) :void {
     //TODO:
     console.log("sacuvali smo");
-    
+     
     this.admin.bloodBank = this.bloodBank;
     this.adminService.saveAdminChanges(this.admin).subscribe(res =>
     {console.log(res);

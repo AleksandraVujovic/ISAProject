@@ -30,8 +30,7 @@ export class ViewCustomersAppointmentComponent implements OnInit {
     this.customer = this.customerService.customer;
     this.appointmentService.getAppointmentsByCustomerId(this.customer.id).subscribe(res => {
       this.appointments = res;
-      console.log(this.appointments[0]);
-      
+      console.log(this.appointments);
     }
     )
   }
@@ -40,6 +39,7 @@ export class ViewCustomersAppointmentComponent implements OnInit {
     this.selectedAppointment.executed = AppointmentStatus.CANCALLED;
     this.appointmentService.updateAppointment(this.selectedAppointment).subscribe(res => {
       console.log(res); 
+      this.router.navigate(['view-customers'])
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, UrlSerializer } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription } from 'rxjs';
 import { Customer } from 'src/app/model/Users/customer';
@@ -24,6 +24,7 @@ export class AnswerFormComponent implements OnInit {
   private routeSub: Subscription;
 
   constructor(
+    private serializer : UrlSerializer,
     private userService: UserService,
     private questionnaireService: QuestionnaireService,
     private appointmentService: AppointmentService,
@@ -34,7 +35,23 @@ export class AnswerFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    var userId = localStorage.getItem('loggedUserId') ?? '-1';
+    if(localStorage.getItem("loggedUserRole") == "ROLE_ADMIN"){
+      console.log("ROLE_ADMIN");
+      
+    const url = document.URL;
+    var splitted = url.split("/",5)
+    console.log("URL JE");
+    
+    
+    console.log(splitted[0]);
+    console.log(splitted[1]);
+    console.log(splitted[2]);
+    console.log(splitted[3]);
+    console.log(splitted[4]);
+    console.log(splitted[5]);
+    console.log(url);
+
+    var userId =splitted[4];
     this.customerService.getCustomerByID(userId).subscribe(
       (res) => {
         this.gender = res.gender;
@@ -56,7 +73,33 @@ export class AnswerFormComponent implements OnInit {
         this.toastr.error(error);
       }
     );
-  }
+    
+    }else{
+
+      var userId = localStorage.getItem('loggedUserId') ?? '-1';
+      this.customerService.getCustomerByID(userId).subscribe(
+        (res) => {
+          this.gender = res.gender;
+        },
+        (error) => {
+          this.toastr.error(error);
+        }
+        );
+        this.questionnaireService.getQuestionnaireForCustomer(userId).subscribe(
+          (res) => {
+            if (res == null) {
+              this.questionnaire.customerId = userId;
+              return;
+            }
+            this.questionnaire = res;
+            this.questionairePresent = true;
+          },
+          (error) => {
+            this.toastr.error(error);
+          }
+          );
+        }
+      }
 
   public updateQuestionnaireAndReserveAppointment(): void {
     var questionnaireAction: Observable<any>;

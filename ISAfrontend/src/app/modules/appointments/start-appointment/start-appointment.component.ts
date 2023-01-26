@@ -26,6 +26,9 @@ export class StartAppointmentComponent implements OnInit {
   ngOnInit(): void {
     this.selectedAppointment = this.appointmentService.selectedAppointment;
     this.selectedBloodType = this.bloodTypes[0];
+    console.log("Start Appointment");
+    
+    console.log(this.selectedAppointment);
   }
 
   UpdateAppointment(){
@@ -45,10 +48,12 @@ export class StartAppointmentComponent implements OnInit {
   this.appointmentService.updateAppointment(this.selectedAppointment).subscribe(res => {
     console.log(res);
   });
+  
+  this.router.navigate(['view-customers']);
 }
 
 seeQuestionnaire(){
-  this.router.navigate(['answer-form/', this.selectedAppointment.id]);
+  this.router.navigate(['answer-form/', this.selectedAppointment.takenBy.id]);
 }
 
 }

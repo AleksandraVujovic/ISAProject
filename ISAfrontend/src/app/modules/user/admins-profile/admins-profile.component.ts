@@ -15,7 +15,7 @@ export class AdminsProfileComponent implements OnInit {
   constructor(private adminService: AdminService, private router: Router,private toastr: ToastrService) { }
 
   ngOnInit(): void {
-    this.adminService.getAdminById().subscribe(res =>{
+    this.adminService.getAdminById(localStorage.getItem("loggedUserId")).subscribe(res =>{
       this.admin = res;
       console.log(this.admin);
   })
