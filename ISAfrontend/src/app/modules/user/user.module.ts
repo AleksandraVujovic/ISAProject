@@ -34,7 +34,7 @@ const routes: Routes = [
   { path: 'admin-home-page', component: AdminHomePageComponent },
   { path: 'admins-profile', component: AdminsProfileComponent },
   { path: 'admins-blood-bank', component: AdminsBloodbankComponent },
-  { path: 'edit-user/:id', component: EditUserComponent },
+  { path: 'edit-user', component: EditUserComponent },
   { path: 'register-customer', component: RegisterCustomerComponent },
   { path: 'register-admin', component: RegisterAdminComponent },
   { path: 'fill-form', component: FillFormComponent },

@@ -10,8 +10,7 @@ import adapters.CalendarAppointmentMapper;
 import com.example.BloodBank.service.AdminService;
 import com.example.BloodBank.service.AppointmentService;
 import com.example.BloodBank.service.BloodBankService;
-import com.example.BloodBank.service.service_interface.ICustomerService;
-import com.example.BloodBank.service.service_interface.IQuestionnaireService;
+import com.example.BloodBank.service.service_interface.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,18 +36,18 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "api/appointment")
 public class AppointmentController {
 
-    private final AppointmentService appointmentService;
-    private final BloodBankService bloodBankService;
+    private final IAppointmentService appointmentService;
+    private final IBloodBankService bloodBankService;
     private final ICustomerService customerService;
     private final IQuestionnaireService questionnaireService;
-    private final AdminService adminService;
+    private final IAdminService adminService;
     private static AppointmentMapper appointmentMapper;
     private static CalendarAppointmentMapper calendarAppointmentMapper;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService, BloodBankService bloodBankService,
+    public AppointmentController(IAppointmentService appointmentService, IBloodBankService bloodBankService,
                                  ICustomerService customerService, IQuestionnaireService questionnaireService,
-                                 AdminService adminService, ModelMapper modelMapper) {
+                                 IAdminService adminService, ModelMapper modelMapper) {
         this.appointmentService = appointmentService;
         this.bloodBankService = bloodBankService;
         this.customerService = customerService;

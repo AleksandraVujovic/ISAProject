@@ -2,19 +2,16 @@ package com.example.BloodBank.service;
 
 import com.example.BloodBank.dto.BloodBankDTO;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
-import com.example.BloodBank.model.Admin;
-import com.example.BloodBank.model.BloodBank;
-import com.example.BloodBank.repository.AddressRepository;
-import com.example.BloodBank.repository.BloodBankRepository;
-import com.example.BloodBank.repository.BloodRepository;
+import com.example.BloodBank.model.*;
+import com.example.BloodBank.service.service_interface.repository.AddressRepository;
+import com.example.BloodBank.service.service_interface.repository.BloodBankRepository;
+import com.example.BloodBank.service.service_interface.repository.BloodRepository;
 import com.example.BloodBank.service.service_interface.IBloodBankService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +19,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 
 @Service
@@ -117,38 +112,22 @@ public class BloodBankService implements IBloodBankService {
     }
 
     @Override
-    public List<BloodBank> getBanksByRatingRange(String filter, Pageable page) throws Exception {
+    public Page<BloodBank> getBanksByRatingRange(String filter, Pageable page) throws Exception {
         String[] numbers = filter.split("[|]");
         if(numbers.length != 2){
             throw new Exception("Error in filter string");
         }
-        double temp = Double.parseDouble(numbers[0]);
-        Page<BloodBank> bloodBankPage = bloodBankRepository.findByRatingRange(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]), page);
-        List<BloodBank> bloodBanks = new ArrayList<>();
-        for (BloodBank b: bloodBankPage) {
-            bloodBanks.add(b);
-        }
-        return bloodBanks;
+        return bloodBankRepository.findByRatingRange(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]), page);
     }
 
     @Override
-    public List<BloodBank> getBanksByName(String filter, Pageable page) throws Exception {
-        Page<BloodBank> bloodBankPage = bloodBankRepository.findAllByName(filter.toLowerCase(), page);
-        List<BloodBank> bloodBanks = new ArrayList<>();
-        for (BloodBank b: bloodBankPage) {
-            bloodBanks.add(b);
-        }
-        return bloodBanks;
+    public Page<BloodBank> getBanksByName(String filter, Pageable page) throws Exception {
+        return bloodBankRepository.findAllByName(filter.toLowerCase(), page);
     }
 
     @Override
-    public List<BloodBank> getBanksByAddress(String filter, Pageable page) throws Exception {
-        Page<BloodBank> bloodBankPage = bloodBankRepository.findByAddress(filter.toLowerCase(), page);
-        List<BloodBank> bloodBanks = new ArrayList<>();
-        for (BloodBank b: bloodBankPage) {
-            bloodBanks.add(b);
-        }
-        return bloodBanks;
+    public Page<BloodBank> getBanksByAddress(String filter, Pageable page) throws Exception {
+        return bloodBankRepository.findByAddress(filter.toLowerCase(), page);
     }
 
     public Optional<BloodBank> findByEmail(String email) {
@@ -179,6 +158,76 @@ public class BloodBankService implements IBloodBankService {
         }catch(Exception e){
             throw new UnsupportedOperationException(e.getMessage());
         }
+    }
+
+    @Override
+    public boolean checkIfBloodSupplyAvailable(String bankEmail, ScheduledOrder order) {
+        BloodBank bloodBank = bloodBankRepository.findByEmail(bankEmail).orElseThrow();
+        if(bloodBank.getBlood().getAplus() < order.getAplus())
+            return false;
+
+        if(bloodBank.getBlood().getABplus() < order.getABplus())
+            return false;
+
+        if(bloodBank.getBlood().getBplus() < order.getBplus())
+            return false;
+
+        if(bloodBank.getBlood().getOplus() < order.getOplus())
+            return false;
+
+        if(bloodBank.getBlood().getAminus() < order.getAminus())
+            return false;
+
+        if(bloodBank.getBlood().getABminus() < order.getABminus())
+            return false;
+
+        if(bloodBank.getBlood().getBminus() < order.getBminus())
+            return false;
+
+        if(bloodBank.getBlood().getOminus() < order.getOminus())
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public void reduceBloodSupply(String bankEmail, ScheduledOrder order) throws Exception {
+        if(!checkIfBloodSupplyAvailable(bankEmail, order)){
+            throw new Exception("Cant reduce blood");
+        }
+        BloodBank bloodBank = bloodBankRepository.findByEmail(bankEmail).orElseThrow();
+        bloodBank.getBlood().setAplus(bloodBank.getBlood().getAplus() - order.getAplus());
+        bloodBank.getBlood().setABplus(bloodBank.getBlood().getABplus() - order.getABplus());
+        bloodBank.getBlood().setBplus(bloodBank.getBlood().getBplus() - order.getBplus());
+        bloodBank.getBlood().setOplus(bloodBank.getBlood().getOplus() - order.getOplus());
+        bloodBank.getBlood().setAminus(bloodBank.getBlood().getAminus() - order.getAminus());
+        bloodBank.getBlood().setABminus(bloodBank.getBlood().getABminus() - order.getABminus());
+        bloodBank.getBlood().setBminus(bloodBank.getBlood().getBminus() - order.getBminus());
+        bloodBank.getBlood().setOminus(bloodBank.getBlood().getOminus() - order.getOminus());
+        bloodBankRepository.save(bloodBank);
+    }
+
+    @Override
+    public void saveBloodFromAppointment(Appointment entity) {
+        Blood blood = entity.getLocation().getBlood();
+        if(entity.getTypeOfBlood() == TypeOfBlood.A_PLUS){
+            blood.setAplus(blood.getAplus() + entity.getQuantityOfBlood());
+        } else if (entity.getTypeOfBlood() == TypeOfBlood.B_PLUS) {
+            blood.setBplus(blood.getBplus() + entity.getQuantityOfBlood());
+        } else if (entity.getTypeOfBlood() == TypeOfBlood.AB_PLUS) {
+            blood.setABplus(blood.getABplus() + entity.getQuantityOfBlood());
+        }else if (entity.getTypeOfBlood() == TypeOfBlood.O_PLUS) {
+            blood.setOplus(blood.getOplus() + entity.getQuantityOfBlood());
+        }else if (entity.getTypeOfBlood() == TypeOfBlood.A_MINUS) {
+            blood.setAminus(blood.getAminus() + entity.getQuantityOfBlood());
+        }else if (entity.getTypeOfBlood() == TypeOfBlood.B_MINUS) {
+            blood.setBminus(blood.getBminus() + entity.getQuantityOfBlood());
+        }else if (entity.getTypeOfBlood() == TypeOfBlood.AB_MINUS) {
+            blood.setABminus(blood.getABminus() + entity.getQuantityOfBlood());
+        }else {
+            blood.setOminus(blood.getOminus() + entity.getQuantityOfBlood());
+        }
+        bloodRepository.save(blood);
     }
 
     @Transactional

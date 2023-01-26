@@ -1,11 +1,11 @@
 package com.example.BloodBank.service;
 
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
-import com.example.BloodBank.model.AuthRequest;
 import com.example.BloodBank.model.User;
-import com.example.BloodBank.repository.UserRepository;
+import com.example.BloodBank.service.service_interface.repository.UserRepository;
 import com.example.BloodBank.service.service_interface.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +40,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public User Update(User entity) throws Exception {
         Optional<User> user = userRepository.findById(entity.getId());
         if(user.isPresent()){
@@ -52,6 +53,7 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public void Delete(User entity) throws Exception {
         userRepository.delete(entity);
     }

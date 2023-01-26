@@ -3,13 +3,13 @@ package com.example.BloodBank.controller;
 import adapters.BloodBankMapper;
 import com.example.BloodBank.dto.BloodBankDTO;
 import com.example.BloodBank.dto.PagableRequestDTO;
+import com.example.BloodBank.dto.appointmentDTOs.AppointmentViewDTO;
 import com.example.BloodBank.model.*;
 import com.example.BloodBank.service.BloodBankService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -48,41 +49,53 @@ public class BloodBankController {
     @CrossOrigin("http://localhost:4200")
 //    @PreAuthorize("hasRole('ROLE_HEADADMIN')")
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<BloodBankDTO>> getAllPaginate(@Valid @RequestBody PagableRequestDTO request){
+    public ResponseEntity<Object> getAllPaginate(@Valid @RequestBody PagableRequestDTO request){
         try{
-            Pageable page;
-            if(request.getSortColumn().isEmpty()){
-                page = PageRequest.of(request.getPageIndex(), request.getPageSize());
-            } else {
-                if(request.getSortDirection().toLowerCase().equals("desc")){
-                    page = PageRequest.of(request.getPageIndex(), request.getPageSize(), Sort.by(request.getSortColumn()).descending());
-                } else if(request.getSortDirection().toLowerCase().equals("asc")){
-                    page = PageRequest.of(request.getPageIndex(), request.getPageSize(), Sort.by(request.getSortColumn()).ascending());
-                } else {
-                    page = PageRequest.of(request.getPageIndex(), request.getPageSize());
-                }
-            }
-            List<BloodBankDTO> bloodBanks = new ArrayList<>();
-            switch (request.getFilterType()){
-                case RATING:
-                    bloodBanks = bloodBankMapper.toBloodBankDTOList(bloodBankService.getBanksByRatingRange(request.getFilter(), page));
-                    break;
-                case DISTANCE:
-                    break;
-                case NAME_SEARCH:
-                    bloodBanks = bloodBankMapper.toBloodBankDTOList(bloodBankService.getBanksByName(request.getFilter(), page));
-                    break;
-                case ADDRESS_SEARCH:
-                    bloodBanks = bloodBankMapper.toBloodBankDTOList(bloodBankService.getBanksByAddress(request.getFilter(), page));
-                    break;
-                default:
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
+            Pageable page = setPageableRequest(request);
+            Page<BloodBankDTO> bloodBanks = getBloodBankPageable(request, page);
+            if(bloodBanks == null)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(bloodBanks, HttpStatus.OK);
         }
         catch(Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private Page<BloodBankDTO> getBloodBankPageable(PagableRequestDTO request, Pageable page) throws Exception {
+        Page<BloodBank> bloodBanks = null;
+        switch (request.getFilterType()){
+            case RATING:
+                bloodBanks = bloodBankService.getBanksByRatingRange(request.getFilter(), page);
+                break;
+            case DISTANCE:
+                break;
+            case NAME_SEARCH:
+                bloodBanks = bloodBankService.getBanksByName(request.getFilter(), page);
+                break;
+            case ADDRESS_SEARCH:
+                bloodBanks = bloodBankService.getBanksByAddress(request.getFilter(), page);
+                break;
+        }
+        if(bloodBanks == null)
+            return null;
+        return new PageImpl<>(bloodBanks.getContent().stream().map(BloodBankMapper::toBloodBankDTO).collect(Collectors.toList()), page, bloodBanks.getTotalElements());
+    }
+
+    private static Pageable setPageableRequest(PagableRequestDTO request) {
+        Pageable page;
+        if(request.getSortColumn().isEmpty()){
+            page = PageRequest.of(request.getPageIndex(), request.getPageSize());
+        } else {
+            if(request.getSortDirection().toLowerCase().equals("desc")){
+                page = PageRequest.of(request.getPageIndex(), request.getPageSize(), Sort.by(request.getSortColumn()).descending());
+            } else if(request.getSortDirection().toLowerCase().equals("asc")){
+                page = PageRequest.of(request.getPageIndex(), request.getPageSize(), Sort.by(request.getSortColumn()).ascending());
+            } else {
+                page = PageRequest.of(request.getPageIndex(), request.getPageSize());
+            }
+        }
+        return page;
     }
 
     @CrossOrigin("http://localhost:4200")

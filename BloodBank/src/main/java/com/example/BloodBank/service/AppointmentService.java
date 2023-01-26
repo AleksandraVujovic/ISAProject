@@ -1,47 +1,50 @@
 package com.example.BloodBank.service;
 
 import com.example.BloodBank.dto.appointmentDTOs.BookAppointmentDTO;
-import com.example.BloodBank.model.Appointment;
-import com.example.BloodBank.model.AppointmentStatus;
-import com.example.BloodBank.model.Customer;
-import com.example.BloodBank.repository.AppointmentRepository;
-import com.example.BloodBank.repository.CustomerRepository;
+import com.example.BloodBank.model.*;
+import com.example.BloodBank.service.service_interface.IQrCodeService;
+import com.example.BloodBank.service.service_interface.repository.AppointmentRepository;
+import com.example.BloodBank.service.service_interface.repository.CustomerRepository;
 import com.example.BloodBank.service.service_interface.IAppointmentService;
 import com.example.BloodBank.service.service_interface.IQuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import javax.activation.DataSource;
+import javax.mail.util.ByteArrayDataSource;
+import java.awt.image.BufferedImage;
+import java.util.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 public class AppointmentService implements IAppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final BloodBankService bloodBankService;
 
     private final IQuestionnaireService questionnaireService;
     private final CustomerRepository customerRepository;
     private final EmailSenderService emailSenderService;
 
+    private final IQrCodeService qrCodeService;
+
 
     @Autowired
-    public AppointmentService(AppointmentRepository appointmentRepository,
-                              CustomerRepository customerRepository,
+    public AppointmentService(AppointmentRepository appointmentRepository, BloodBankService bloodBankService, CustomerRepository customerRepository,
                               EmailSenderService emailSenderService,
-                              IQuestionnaireService questionnaireService) {
+                              IQuestionnaireService questionnaireService, IQrCodeService qrCodeService) {
         this.appointmentRepository = appointmentRepository;
+        this.bloodBankService = bloodBankService;
         this.questionnaireService = questionnaireService;
         this.customerRepository = customerRepository;
         this.emailSenderService = emailSenderService;
+        this.qrCodeService = qrCodeService;
     }
 
     @Override
@@ -65,12 +68,13 @@ public class AppointmentService implements IAppointmentService {
             entity.setVersion(appointmentRepository.findById(entity.getId()).get().getVersion());
             return appointmentRepository.save(entity);
         }else{
+            bloodBankService.saveBloodFromAppointment(entity);
             return appointmentRepository.save(entity);
         }
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(readOnly = false)
     public void Delete(Appointment entity) throws Exception {
         appointmentRepository.delete(entity);
     }
@@ -164,10 +168,20 @@ public class AppointmentService implements IAppointmentService {
         return appointment;
 
     }
-    private void SendConfirmationCode(Appointment app){
+    private void SendConfirmationCode(Appointment app) throws Exception {
         Customer customer = customerRepository.findById(app.getTakenBy().getId()).get();
-        emailSenderService.sendSimpleEmail(customer.getEmail(), "Confirm booked appointment", "Appointment activation link is: http://localhost:8086/api/appointment/confirm/"+ app.getConfirmationCode());
+        String activationLink = "http://localhost:8086/api/appointment/confirm/"+ app.getConfirmationCode();
+        Map<String, DataSource> files = new HashMap<>();
+        PrepareQrCode(activationLink, files);
+        emailSenderService.sendMailWithInlineResources(customer.getEmail(), "Confirm booked appointment", "Appointment activation link is:" + activationLink, files);
     }
+
+    private void PrepareQrCode(String activationLink, Map<String, DataSource> files) throws Exception {
+        BufferedImage qrCodeImage = qrCodeService.generateQRCodeImage(activationLink, 200, 200);
+        byte[] qrCodeBytes = qrCodeService.toByteArrayFromBufferedImage(qrCodeImage);
+        files.put("activation.png", new ByteArrayDataSource(qrCodeBytes, "image/png"));
+    }
+
     @Transactional(readOnly = false)
     public Appointment ConfirmAppointment(String confirmationCode) throws Exception {
         try {

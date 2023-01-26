@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity(name="head_admins")
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class HeadAdmin extends User{
+public class HeadAdmin extends User implements Serializable {
 
     @NotNull
     private boolean isPasswordChanged;

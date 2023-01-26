@@ -1,9 +1,9 @@
 insert into blood(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus)
-values(1001,2, 4, 0, 0, 5, 3, 2, 7);
+values(1001, 500, 500, 500, 500, 500, 500, 500, 500);
 insert into blood(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus)
-values(1002,1, 0, 0, 0, 0, 8, 7, 0);
+values(1002, 500, 500, 500, 500, 500, 500, 500, 500);
 insert into blood(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus)
-values(1003,0, 0, 1, 3, 5, 5, 9, 3);
+values(1003, 500, 500, 500, 500, 500, 500, 500, 500);
 
 
 insert into address
@@ -89,7 +89,7 @@ values
     (1031, '2022-12-19', 'ff', '11:09', 'DONE', '11:00', 0, 1007, 1023, 2, 0, 'odlicno'),
     (1032, '2022-12-29', 'ff', '11:45', 'PENDING', '11:30', 0, 1008, 1023, 2, 0, 'odlicno'),
     (1033, '2022-12-19', 'ff', '11:45', 'DONE', '11:31', 0, 1009, 1024, 2, 0, 'odlicno'),
-    (1034, '2022-12-19', 'ff', '11:45', 'CANCELLED', '11:31', 0, 1007, 1023, 2, 0, 'odlicno'),
+    (1034, '2021-05-10', 'ff', '15:45', 'DONE', '15:31', 0, 1007, 1023, 2, 0, 'odlicno'),
     (1035, '2022-12-19', 'ff', '11:45', 'CANCELLED', '11:31', 0, 1007, 1024, 2, 0, 'odlicno'),
     (1036, '2022-12-19', 'ff', '11:45', 'DONE', '11:31', 0, 1009, 1023, 2, 0, 'odlicno'),
     (1037, '2022-12-30', 'ff', '11:45', 'PENDING', '11:31', 0, 1008, 1024, 2, 0, 'odlicno'),
@@ -116,11 +116,14 @@ insert into blood_bank
 values(10, 't125J6w79JdrILqI34F6kYM3UAWENV8RjeZvi0LVtJochrXWJ7mpt0Cdedka8lVWUPnCFLZOhJbcS8ao9VFgwQ==', 'Best blood bank', 'newlife123@gmail.com', '21:00', 'New Life21341', 5, 4.4, '08:00', 1004, 1001);
 
 insert into users
-values(101, '1995-12-10', 'halidpasanovic1000@gmail.com', 'Halid', 1, 'Pasanovic', '123', 1, 'halidpasa', 1011);
+values(101, '1995-12-10', 'halidpasanovic200@gmail.com', 'Halid', 1, 'Pasanovic', '123', 1, 'halidpasa', 1011);
 insert into users
-values(102, '2000-06-03', 'saska213@gmail.com', 'Saska', 0, 'Vujovic', '123', 2, 'uros', 1012);
+values(102, '2000-06-03', 'halidpasanovic1000@gmail.com', 'Saska', 0, 'Vujovic', '123', 2, 'uros', 1012);
 insert into users
 values(103, '2000-05-05', 'nikola436346@gmail.com', 'Nikola', 1, 'Rosic', '123', 2, 'milica', 1013);
+
+INSERT INTO scheduled_order(id, abminus, abplus, aminus, aplus, bminus, bplus, ominus, oplus, bank_email, day_of_month, hospital_email)
+	VALUES (1000, 1, 0, 0, 0, 0, 0, 0, 0, 'bloodymary@gmail.com', 22, 'zdravocorp2022@gmail.com');
 
 insert into admin
 values(101, 10);

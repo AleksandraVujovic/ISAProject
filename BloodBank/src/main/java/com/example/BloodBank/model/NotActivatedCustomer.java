@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -15,7 +13,7 @@ import java.time.LocalDate;
 @Data
 @Entity(name="not_activated_user")
 @Table
-public class NotActivatedUser {
+public class NotActivatedCustomer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -33,4 +31,8 @@ public class NotActivatedUser {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
     private String activation;
+    private String jmbg;
+    private String phoneNumber;
+    private String profession;
+    private String professionInfo;
 }

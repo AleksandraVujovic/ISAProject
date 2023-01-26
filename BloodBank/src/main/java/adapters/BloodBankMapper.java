@@ -18,4 +18,8 @@ public class BloodBankMapper {
     public static List<BloodBankDTO> toBloodBankDTOList(List<BloodBank> banks){
         return modelMapper.map(banks, new TypeToken<List<BloodBankDTO>>() {}.getType());
     }
+
+    public static BloodBankDTO toBloodBankDTO(BloodBank bank){
+        return modelMapper.map(bank, BloodBankDTO.class);
+    }
 }

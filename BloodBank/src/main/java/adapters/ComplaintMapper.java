@@ -21,6 +21,9 @@ public class ComplaintMapper {
         String type = complaintDTO.getComplaintType();
         complaintDTO.setComplaintType(type.substring(0, 1) + type.substring(1).toLowerCase());
         complaintDTO.setCustomerName(complaint.getCustomer().getFirstName() + " "+ complaint.getCustomer().getLastName());
+        if(complaint.getHeadAdmin() == null)
+            return complaintDTO;
+        complaintDTO.setHeadAdminId(complaint.getHeadAdmin().getId());
         return complaintDTO;
     }
 

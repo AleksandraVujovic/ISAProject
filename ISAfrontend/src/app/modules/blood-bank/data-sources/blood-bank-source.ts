@@ -10,8 +10,10 @@ export class BloodBankSource implements DataSource<BloodBank> {
 
     private bloodBankSubject = new BehaviorSubject<BloodBank[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
+    private countSubject = new BehaviorSubject<number>(0);
 
     public loading$ = this.loadingSubject.asObservable();
+    public count$ = this.countSubject.asObservable();
 
     constructor(private bloodBankService: BloodBankService) { }
 
@@ -23,6 +25,7 @@ export class BloodBankSource implements DataSource<BloodBank> {
     disconnect(collectionViewer: CollectionViewer): void {
         this.bloodBankSubject.complete();
         this.loadingSubject.complete();
+        this.countSubject.complete();
     }
 
     loadBloodBanks(request: PagableRequest = new PagableRequest()) {
@@ -32,8 +35,9 @@ export class BloodBankSource implements DataSource<BloodBank> {
             catchError(() => of([])),
             finalize(() => this.loadingSubject.next(false))
           )
-          .subscribe((result: BloodBank[]) => {
-            this.bloodBankSubject.next(result);
+          .subscribe((result: any) => {
+            this.bloodBankSubject.next(result.content);
+            this.countSubject.next(result.totalElements);
         })
     }
 }

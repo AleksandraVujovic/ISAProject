@@ -1,10 +1,11 @@
 package com.example.BloodBank.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-public class Admin extends User{
+public class Admin extends User implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bank_id", referencedColumnName = "bankID")
     private BloodBank bloodBank;

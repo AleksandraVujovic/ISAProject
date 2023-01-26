@@ -2,10 +2,11 @@ package com.example.BloodBank.service;
 
 import com.example.BloodBank.dto.userDTOs.RegistrationAdminDTO;
 import com.example.BloodBank.model.BloodBank;
-import com.example.BloodBank.repository.AdminRepository;
+import com.example.BloodBank.service.service_interface.repository.AdminRepository;
 import com.example.BloodBank.service.service_interface.IAdminService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.Admin;
@@ -44,11 +45,13 @@ public class AdminService implements IAdminService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public Admin Update(Admin entity){
         return adminRepository.save(entity);
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public void Delete(Admin entity){
         adminRepository.delete(entity);
     }

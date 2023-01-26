@@ -1,5 +1,6 @@
-package com.example.BloodBank.repository;
+package com.example.BloodBank.service.service_interface.repository;
 
+import com.example.BloodBank.model.Appointment;
 import com.example.BloodBank.model.BloodBank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,4 +29,6 @@ public interface BloodBankRepository extends JpaRepository<BloodBank, Long> {
     @Query("SELECT bank FROM blood_bank bank \n" +
             "WHERE bank.rating >= ?1 and bank.rating <= ?2")
     Page<BloodBank> findByRatingRange(double bottom, double top, Pageable page);
+
+
 }

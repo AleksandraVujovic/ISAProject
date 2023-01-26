@@ -3,11 +3,13 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.dto.FilledOrderDTO;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.ScheduledOrder;
-import com.example.BloodBank.repository.ScheduledOrdersRepository;
+import com.example.BloodBank.service.service_interface.repository.ScheduledOrdersRepository;
 import com.example.BloodBank.service.service_interface.IScheduledOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,17 +59,50 @@ public class ScheduledOrderService implements IScheduledOrderService {
     public List<ScheduledOrder> GetAll() throws Exception {
         return scheduledOrdersRepository.findAll();
     }
+
+    @Override
     public void sendOrders() throws Exception{
         List<ScheduledOrder> scheduledOrderList = GetAll();
         for (ScheduledOrder so : scheduledOrderList){
-            //check if day is correct
-            FilledOrderDTO fo = new FilledOrderDTO();
-            fo.readScheduled(so);
-            fo.setBankApi(bloodBankService.findByEmail(so.getBankEmail()).get().getAPIKey());
-            //check if there is enough blood
-            fo.setSent(true);
+            if(checkIfNDaysBefore(so, 5)){
+                SendMessageIfCantSendBlood(so);
+                break;
+            }
+            if (!checkIfCorrectDay(so)) break;
+            bloodBankService.reduceBloodSupply(so.getBankEmail(), so);
+            FilledOrderDTO fo = SetupFilledOrder(so);
             rabbitMQSender.sendOrder(fo);
-
         }
+    }
+
+    private void SendMessageIfCantSendBlood(ScheduledOrder so) {
+        if(!bloodBankService.checkIfBloodSupplyAvailable(so.getBankEmail(), so)){
+            SendFailedBloodDelivery(so);
+        }
+    }
+
+
+    private void SendFailedBloodDelivery(ScheduledOrder so) {
+        FilledOrderDTO fo = SetupFilledOrder(so);
+        fo.setSent(false);
+        rabbitMQSender.sendOrder(fo);
+    }
+
+    private FilledOrderDTO SetupFilledOrder(ScheduledOrder so) {
+        FilledOrderDTO fo = new FilledOrderDTO();
+        fo.readScheduled(so);
+        fo.setBankApi(bloodBankService.findByEmail(so.getBankEmail()).get().getAPIKey());
+        fo.setSent(true);
+        return fo;
+    }
+
+    private static boolean checkIfCorrectDay(ScheduledOrder so) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return timestamp.getDate() == so.getDayOfMonth();
+    }
+
+    private static boolean checkIfNDaysBefore(ScheduledOrder so, int nDays) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return (timestamp.getDate() - nDays) == so.getDayOfMonth();
     }
 }

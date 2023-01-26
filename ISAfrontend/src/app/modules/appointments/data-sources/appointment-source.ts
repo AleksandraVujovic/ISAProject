@@ -22,6 +22,7 @@ export class AppointmentSource implements DataSource<Appointment> {
     disconnect(collectionViewer: CollectionViewer): void {
         this.appointmentSubject.complete();
         this.loadingSubject.complete();
+        this.countSubject.complete();
     }
 
     loadAppointments(request : PageRequest = new PageRequest()) {

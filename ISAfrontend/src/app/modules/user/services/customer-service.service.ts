@@ -32,7 +32,7 @@ export class CustomerService {
       .pipe(catchError(this.handleValidationError));
   }
 
-  getCustomerByID(id: number): Observable<User> {
+  getCustomerByID(id: any): Observable<User> {
     return this.http
       .get<User>(this.apiHost + 'api/customer/' + id, { headers: this.headers })
       .pipe(catchError(this.handleValidationError));

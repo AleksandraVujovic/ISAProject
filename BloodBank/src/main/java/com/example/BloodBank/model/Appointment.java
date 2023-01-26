@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -13,7 +14,9 @@ import java.sql.Time;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Appointment {
+public class Appointment implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,8 +52,8 @@ public class Appointment {
     private BloodBank location;
 
     @Version
-    @Column(columnDefinition = "integer DEFAULT 0", nullable = false)
     private Integer version;
+
     private String confirmationCode;
 
     public Appointment(Date appointmentDate, Time startTime, Time endTime, Customer takenBy, BloodBank location, AppointmentStatus status) {

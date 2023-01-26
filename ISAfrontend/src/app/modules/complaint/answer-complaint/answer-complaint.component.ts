@@ -45,6 +45,8 @@ export class AnswerComplaintComponent implements OnInit {
   }
 
   public answerComplaint(){
+    this.complaint.headAdminId = Number(localStorage.getItem("loggedUserId"));
+    console.log(this.complaint)
     this.complaintService.answerComplaint(this.complaint).subscribe( res => 
       {
         this.toastr.success("You successfully answered a complaint!");

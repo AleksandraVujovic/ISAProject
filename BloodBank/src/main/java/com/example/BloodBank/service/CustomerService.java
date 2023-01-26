@@ -3,14 +3,13 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.exceptions.EmailTakenException;
 import com.example.BloodBank.exceptions.UsernameTakenException;
 import com.example.BloodBank.exceptions.EntityDoesntExistException;
-import com.example.BloodBank.model.BloodBank;
 import com.example.BloodBank.model.Customer;
-import com.example.BloodBank.model.Role;
 import com.example.BloodBank.model.User;
-import com.example.BloodBank.repository.CustomerRepository;
-import com.example.BloodBank.repository.UserRepository;
+import com.example.BloodBank.service.service_interface.repository.CustomerRepository;
+import com.example.BloodBank.service.service_interface.repository.UserRepository;
 import com.example.BloodBank.service.service_interface.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -86,11 +85,13 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public Customer Update(Customer entity) throws Exception {
         return customerRepository.save(entity);
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public void Delete(Customer entity) throws Exception {
         customerRepository.delete(entity);
     }

@@ -17,6 +17,6 @@ export class PagableRequest {
         this.sortDirection = obj?.sortDirection ?? "";
         this.sortColumn = obj?.sortColumn ?? "";
         this.pageIndex = obj?.pageIndex ?? 0;
-        this.pageSize = obj?.pageSize ?? 5;
+        this.pageSize = obj?.pageSize ?? 2;
     }
 }

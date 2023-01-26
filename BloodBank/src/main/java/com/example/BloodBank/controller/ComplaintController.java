@@ -109,6 +109,7 @@ public class ComplaintController {
             ComplaintDTO complaintDTO = complaintMapper.toDTO(complaintService.findById(id).get());
             return new ResponseEntity<>(complaintService.getDefendantName(complaintDTO, complaintService.findById(id).get()), HttpStatus.OK);
         } catch (Exception e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

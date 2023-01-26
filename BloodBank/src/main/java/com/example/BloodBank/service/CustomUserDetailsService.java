@@ -1,8 +1,9 @@
 package com.example.BloodBank.service;
 
 import com.example.BloodBank.model.User;
-import com.example.BloodBank.repository.UserRepository;
+import com.example.BloodBank.service.service_interface.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository repository;
     @Override
+    @Cacheable(value = "userInfo", key="#username")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repository.findByUsername(username).get();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

@@ -1,10 +1,11 @@
 package com.example.BloodBank.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "blood")
-public class Blood {
+public class Blood implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

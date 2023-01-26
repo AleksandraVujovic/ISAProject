@@ -3,15 +3,15 @@ package com.example.BloodBank.service;
 import com.example.BloodBank.exceptions.EmailTakenException;
 import com.example.BloodBank.exceptions.UsernameTakenException;
 import com.example.BloodBank.model.*;
-import com.example.BloodBank.repository.HeadAdminRepository;
-import com.example.BloodBank.repository.UserRepository;
+import com.example.BloodBank.service.service_interface.repository.HeadAdminRepository;
+import com.example.BloodBank.service.service_interface.repository.UserRepository;
 import com.example.BloodBank.service.service_interface.IHeadAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 @Service
 public class HeadAdminService implements IHeadAdminService {
@@ -46,15 +46,17 @@ public class HeadAdminService implements IHeadAdminService {
 
     @Override
     public HeadAdmin Read(Long id) throws Exception {
-        return null;
+        return headAdminRepository.findById(id).get();
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public HeadAdmin Update(HeadAdmin entity) throws Exception {
         return headAdminRepository.save(entity);
     }
 
     @Override
+    @CacheEvict(cacheNames = {"userInfo"}, allEntries = true, key = "#entity.getUsername()")
     public void Delete(HeadAdmin entity) throws Exception {
 
     }

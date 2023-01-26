@@ -6,6 +6,7 @@ export class Complaint {
     submissionDate: Date = new Date();
     defendantName: String = "";
     id: number = -1;
+    headAdminId: number = -1;
 
     public constructor(obj?: any) {
         if (obj){
@@ -16,6 +17,7 @@ export class Complaint {
             this.submissionDate = obj.submissionDate;
             this.defendantName = obj.defendantName;
             this.id = obj.id;
+            this.headAdminId = obj.headAdminId;
         }
     }
 }

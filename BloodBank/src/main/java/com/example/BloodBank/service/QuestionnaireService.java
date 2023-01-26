@@ -5,16 +5,14 @@ import com.example.BloodBank.exceptions.EntityDoesntExistException;
 import com.example.BloodBank.model.Customer;
 import com.example.BloodBank.exceptions.QuestionnaireForCustomerDoesntExist;
 import com.example.BloodBank.model.Questionnaire;
-import com.example.BloodBank.repository.CustomerRepository;
-import com.example.BloodBank.repository.QuestionnaireRepository;
+import com.example.BloodBank.service.service_interface.repository.CustomerRepository;
+import com.example.BloodBank.service.service_interface.repository.QuestionnaireRepository;
 import com.example.BloodBank.service.service_interface.IQuestionnaireService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Table;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 @Service
 public class QuestionnaireService implements IQuestionnaireService {
@@ -33,6 +31,7 @@ public class QuestionnaireService implements IQuestionnaireService {
         return questionnaireRepository.save(entity);
     }
 
+    @CacheEvict(value = {"questionnaire", "questionnaires"}, allEntries = true)
     public Questionnaire CreateDTO(QuestionnaireDTO dto){
         Questionnaire questionnaire = questionnaireRepository.findByCustomerId((Long.valueOf(dto.getCustomerId())));
         if (questionnaire == null){

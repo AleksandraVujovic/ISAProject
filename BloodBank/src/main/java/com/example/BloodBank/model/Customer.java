@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-public class Customer extends User {
+public class Customer extends User implements Serializable {
     @NotNull
     @NotBlank
     private String jmbg;

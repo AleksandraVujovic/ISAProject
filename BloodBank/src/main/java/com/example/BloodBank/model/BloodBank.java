@@ -4,6 +4,7 @@ package com.example.BloodBank.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity(name="blood_bank")
 @Table
-public class BloodBank{
+public class BloodBank implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
