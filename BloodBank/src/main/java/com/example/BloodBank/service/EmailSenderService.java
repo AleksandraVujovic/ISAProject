@@ -8,6 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.activation.DataHandler;
@@ -31,6 +32,7 @@ public class EmailSenderService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Async
     public void sendSimpleEmail(String toEmail,
                                 String subject,
                                 String body
@@ -47,6 +49,7 @@ public class EmailSenderService {
 
     }
 
+    @Async
     public void sendMailWithAttachment(String to, String subject, String body, Map<String, DataSource> files) throws Exception
     {
         MimeMessagePreparator preparator = new MimeMessagePreparator()
@@ -81,6 +84,7 @@ public class EmailSenderService {
         mailSender.send(preparator);
     }
 
+    @Async
     public void sendMailWithInlineResources(String to, String subject, String body, Map<String, DataSource> files)
     {
         MimeMessagePreparator preparator = new MimeMessagePreparator()

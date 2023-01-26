@@ -22,28 +22,34 @@
         <!-- <span class="sr-only">(current)</span>  VRV POKAZUJE DA LI SMO NA TOJ STRANI-->
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="role == 'ROLE_CUSTOMER'">
         <a class="nav-link navbar_labels" href="fill-form">Fill form</a>
       </li>
-      <li class="nav-item">
+      <li
+        class="nav-item"
+        *ngIf="
+          (role != 'ROLE_HEADADMIN' &&
+            role != 'ROLE_ADMIN' &&
+            role != 'ROLE_CUSTOMER') ||
+          role == null
+        "
+      >
         <a class="nav-link navbar_labels" href="register-customer"
           >Register customer</a
         >
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="role == 'ROLE_CUSTOMER'">
         <a class="nav-link navbar_labels" href="find-appointment"
           >Find appointment</a
         >
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="role == 'ROLE_CUSTOMER'">
         <a class="nav-link navbar_labels" href="my-appointments"
           >My appointments</a
         >
       </li>
-      <li class="nav-item">
-        <a class="nav-link navbar_labels" href="edit-user"
-          >Edit Profile</a
-        >
+      <li class="nav-item" *ngIf="role == 'ROLE_CUSTOMER'">
+        <a class="nav-link navbar_labels" href="edit-user">Edit Profile</a>
       </li>
       <li
         class="nav-item"
